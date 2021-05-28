@@ -11,8 +11,8 @@ const authenticatedUser = request.agent(app);
 describe('User REST API Unit Test', function() {
   let user;
   const firstUser = {
-    'username': 'cameron',
-    'password': '12345',
+    'username': 'cameron2',
+    'password': '123456',
   };
   user = firstUser.username;
 
@@ -22,22 +22,7 @@ describe('User REST API Unit Test', function() {
     'bullets': [],
   };
 
-//   it('Test 1: create a valid user', function(done) {
-//     authenticatedUser
-//         .post('/create/user')
-//         .set('Content-Type', 'application/json')
-//         .send(firstUser)
-//         .end(function(err, res) {
-//           expect(res).to.have.status(200);
-//           expect(res.body.id).to.equal(firstUser.username);
-//           user = firstUser.username;
-//           done();
-//         });
-//   });
-
   // log in/ create the session
-//   let userId;
-
   it('Test 2: create a session for the user', function(done) {
     authenticatedUser
         .post('/create/session')
@@ -64,9 +49,11 @@ describe('User REST API Unit Test', function() {
   });
 
 
-let delJSON = {
-    '_id': ""
-};
+  let delJSON = {
+      '_id': ""
+  };
+
+
   // get daily
   it('Test 4: get the day', function(done) {
     authenticatedUser
@@ -106,27 +93,72 @@ let delJSON = {
   });
 
 
-//   const updateDaily = {
+  const updateDailyJSON = {
     
-//     "_id": "72fe31a8-a118-4628-b42c-9e3124aa46e3",
-//     "updateField": {
-//         "day": "10",
-//         "month": "2021-12",
-//         "bullets": []
-//     }
+    "_id": "",
+    "updateField": {
+        "day": "10",
+        "month": "2021-12",
+        "bullets": []
+    }
     
-//   };
+  };
+
+  // new daily creation 
+  it('Test 7: create a daily', function(done) {
+    authenticatedUser
+        .post('/create/daily')
+        .set('Content-Type', 'application/json')
+        .send(newDay)
+        .end(function(err, res) {
+          updateDailyJSON._id = res.body._id;
+          expect(res.statusCode).to.equal(200);
+          expect(res.ok).to.equal(true);
+          done();
+        });
+  });
+
+  // get new daily
+  it('Test 4: get the day', function(done) {
+    authenticatedUser
+        .get('/read/daily/' + newDay.month + '/' + newDay.day)
+        .set('Content-Type', 'application/json')
+        .end(function(err, res) {
+          expect(res.body.month).to.equal('2021-5');
+          expect(res.body.day).to.equal('20');
+          expect(res.body.user).to.equal(user);
+          expect(res.body.docType).to.equal('daily');
+          done();
+        });
+  });
+
+  
   // update daily
-//   it('Test 7: update daily', function(done) {
-//     authenticatedUser
-//         .post('/update/user')
-//         .set('Content-Type', 'application/json')
-//         .send(updateDaily)
-//         .end(function(err, res) {
-//           expect(res.text).to.equal('success');
-//           done();
-//         });
-//   });
+  it('Test 8: update daily', function(done) {
+    authenticatedUser
+        .post('/update/daily')
+        .set('Content-Type', 'application/json')
+        .send(updateDailyJSON)
+        .end(function(err, res) {
+          expect(res.text).to.equal('success');
+          done();
+        });
+  });
+
+
+  // get updated daily
+  it('Test 9: get the new day', function(done) {
+    authenticatedUser
+        .get('/read/daily/' + updateDailyJSON.updateField.month + '/' + updateDailyJSON.updateField.day)
+        .set('Content-Type', 'application/json')
+        .end(function(err, res) {
+          expect(res.body.month).to.equal('2021-12');
+          expect(res.body.day).to.equal('10');
+          expect(res.body.user).to.equal(user);
+          expect(res.body.docType).to.equal('daily');
+          done();
+        });
+  });
   
   
 

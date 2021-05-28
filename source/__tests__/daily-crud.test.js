@@ -106,23 +106,27 @@ let delJSON = {
   });
 
 
-  const updateDaily = {
-    'username': 'non9',
-    'updateField': {
-    'password': '1234',
-    },
-  };
+//   const updateDaily = {
+    
+//     "_id": "72fe31a8-a118-4628-b42c-9e3124aa46e3",
+//     "updateField": {
+//         "day": "10",
+//         "month": "2021-12",
+//         "bullets": []
+//     }
+    
+//   };
   // update daily
-  it('Test 7: update daily', function(done) {
-    authenticatedUser
-        .post('/update/user')
-        .set('Content-Type', 'application/json')
-        .send(updateDaily)
-        .end(function(err, res) {
-          expect(res.text).to.equal('success');
-          done();
-        });
-  });
+//   it('Test 7: update daily', function(done) {
+//     authenticatedUser
+//         .post('/update/user')
+//         .set('Content-Type', 'application/json')
+//         .send(updateDaily)
+//         .end(function(err, res) {
+//           expect(res.text).to.equal('success');
+//           done();
+//         });
+//   });
   
   
 

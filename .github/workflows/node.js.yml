@@ -23,9 +23,11 @@ jobs:
           npm install
           npm test 
           cd ../
-          ls
+         
         env:
           CI: true
+      - name: list
+        run: ls
 
   lint:
       runs-on: ubuntu-latest
